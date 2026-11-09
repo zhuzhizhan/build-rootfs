@@ -9,7 +9,7 @@ usage() {
 Usage: $0 [rootfs-image] [options]
 
 The rootfs image can also be passed with --rootfs. When omitted, it defaults to
-rootfs.ext4 for amd64 and rootfs_<arch>.ext4 for other architectures.
+rootfs_<arch>.ext4 for the selected architecture.
 
 Options:
   -a, --arch <arch>    Architecture: amd64 (default), arm64, arm32, riscv64

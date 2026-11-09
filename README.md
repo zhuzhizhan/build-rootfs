@@ -41,16 +41,16 @@ For example, to generate an `alpine` rootfs, run:
 ./build-rootfs.sh alpine
 ```
 
-Ubuntu 22.04 and 24.04 can be built for `arm64`, `arm32`, and `riscv64`:
+Ubuntu 22.04, 24.04, and 26.04 can be built for `arm64`, `arm32`, and `riscv64`:
 
 ```bash
 ./build-rootfs.sh ubuntu24.04 --arch arm64
 ./build-rootfs.sh ubuntu22.04 --arch arm32
-./build-rootfs.sh ubuntu24.04 --arch riscv64
+./build-rootfs.sh ubuntu26.04 --arch riscv64
 ```
 
-amd64 images are written to `rootfs.ext4`. Other architectures are written to
-`rootfs_<arch>.ext4`. Use `-o <path>` to override the output path.
+Images are written to `rootfs_<arch>.ext4` (for example `rootfs_amd64.ext4`).
+Use `-o <path>` to override the output path.
 
 Notes:
 
@@ -60,9 +60,9 @@ Notes:
 - Ubuntu images include `git`, `gcc`, `vim`, `sudo`, `ethtool`, `ping`,
   `net-tools`, OpenSSH, `udhcpc`, and `apt`, so they can be used as small
   development guests.
-- Ubuntu 22.04 and 24.04 also include Qt6 development files, `g++`, `make`,
-  Xorg, `xinit`, and `openbox`, so the Qt6 GUI example can be built and run
-  inside the guest.
+- Ubuntu 22.04, 24.04, and 26.04 also include Qt6 development files, `g++`,
+  `make`, Xorg, `xinit`, and `openbox`, so the Qt6 GUI example can be built
+  and run inside the guest.
 
 ## Building a kernel
 
@@ -96,7 +96,7 @@ paths as `build-rootfs.sh`:
 
 | Architecture | Default rootfs | Default kernel |
 |--------------|----------------|----------------|
-| `amd64` | `rootfs.ext4` | `kernel/bzImage-6.1.22` |
+| `amd64` | `rootfs_amd64.ext4` | `kernel/bzImage-6.1.22` |
 | `arm64` | `rootfs_arm64.ext4` | `kernel/Image-6.1.22-arm64` |
 | `arm32` | `rootfs_arm32.ext4` | `kernel/zImage-6.1.22-arm32` |
 | `riscv64` | `rootfs_riscv64.ext4` | `kernel/Image-6.1.22-riscv64` |
@@ -126,7 +126,7 @@ Available options:
 Examples:
 
 ```bash
-./run-qemu.sh                                  # amd64, uses rootfs.ext4
+./run-qemu.sh                                  # amd64, uses rootfs_amd64.ext4
 ./run-qemu.sh rootfs_arm64.ext4 --arch arm64
 ./run-qemu.sh --arch arm64                     # uses rootfs_arm64.ext4
 ./run-qemu.sh --arch arm32 --rootfs rootfs_ubuntu24.04_arm32.ext4
@@ -260,8 +260,9 @@ Just add a new folder with the 3 files described above
 
 `./tests/test-all.sh` builds all amd64 rootfs types and boots them with QEMU.
 
-`./tests/test-multiarch.sh` builds Ubuntu 24.04 for arm64, arm32, and riscv64 and
-boots each image. Emulated boots are slow, so this suite takes considerably longer.
+`./tests/test-multiarch.sh [type]` builds the given Ubuntu type (default
+`ubuntu24.04`) for arm64, arm32, and riscv64 and boots each image. Emulated boots
+are slow, so this suite takes considerably longer.
 
 `./tests/test-arch.sh` checks the architecture mapping and CLI validation without
 building an image.

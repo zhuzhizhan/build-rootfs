@@ -9,12 +9,14 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
+TYPE="${1:-ubuntu24.04}"
+
 for arch in arm64 arm32 riscv64; do
-    echo "=== Building ubuntu24.04 for $arch ==="
-    ./build-rootfs.sh ubuntu24.04 --arch "$arch"
+    echo "=== Building $TYPE for $arch ==="
+    ./build-rootfs.sh "$TYPE" --arch "$arch"
     ./tests/qemu-test.sh "$(realpath "rootfs_$arch.ext4")" "$arch"
-    rm -f "rootfs_ubuntu24.04_$arch.ext4"
-    mv "rootfs_$arch.ext4" "rootfs_ubuntu24.04_$arch.ext4"
+    rm -f "rootfs_${TYPE}_$arch.ext4"
+    mv "rootfs_$arch.ext4" "rootfs_${TYPE}_$arch.ext4"
 done
 
 echo "All multiarch tests passed"

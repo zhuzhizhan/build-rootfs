@@ -11,6 +11,10 @@ jobs:
   multiarch:
     runs-on: ubuntu-latest
     timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        type: [ubuntu24.04, ubuntu26.04]
 
     steps:
       - uses: actions/checkout@v4
@@ -23,8 +27,8 @@ jobs:
       - name: Register binfmt handlers
         run: docker run --privileged --rm tonistiigi/binfmt --install arm,arm64,riscv64
 
-      - name: Build and test multiarch Ubuntu images
-        run: sudo ./tests/test-multiarch.sh
+      - name: Build and test multiarch ${{ matrix.type }} images
+        run: sudo ./tests/test-multiarch.sh ${{ matrix.type }}
 
-      - name: Test arm64 tools and networking
-        run: sudo ./tests/test-tools.sh rootfs_ubuntu24.04_arm64.ext4 arm64
+      - name: Test ${{ matrix.type }} arm64 tools and networking
+        run: sudo ./tests/test-tools.sh rootfs_${{ matrix.type }}_arm64.ext4 arm64

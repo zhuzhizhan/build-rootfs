@@ -29,7 +29,7 @@ normalize_arch() {
 
 type_supports_arch() {
     case "$1" in
-        ubuntu22.04|ubuntu24.04) return 0 ;;
+        ubuntu22.04|ubuntu24.04|ubuntu26.04) return 0 ;;
         *) [ "$2" = "amd64" ] ;;
     esac
 }
@@ -71,11 +71,7 @@ set_arch_vars() {
             ;;
     esac
 
-    if [[ "$ARCH" == "amd64" ]]; then
-        ROOTFS_IMAGE="$REPO_DIR/rootfs.ext4"
-    else
-        ROOTFS_IMAGE="$REPO_DIR/rootfs_$ARCH.ext4"
-    fi
+    ROOTFS_IMAGE="$REPO_DIR/rootfs_$ARCH.ext4"
 }
 
 qemu_display_args() {

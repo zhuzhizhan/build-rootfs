@@ -10,8 +10,7 @@ Usage: $0 <rootfs-type> [options]
 
 Options:
   -a, --arch <arch>     Target architecture: amd64 (default), arm64, arm32, riscv64
-  -o, --output <path>   Output image path (default: rootfs.ext4 for amd64,
-                        rootfs_<arch>.ext4 for other architectures)
+  -o, --output <path>   Output image path (default: rootfs_<arch>.ext4)
   -s, --no-sparse       Do not create a sparse image
   -h, --help            Show this help
 
@@ -88,7 +87,7 @@ if ! set_arch_vars "$ARCH_INPUT"; then
 fi
 
 if ! type_supports_arch "$TYPE" "$ARCH"; then
-    echo "Rootfs type '$TYPE' only supports amd64. Multi-arch types: ubuntu22.04, ubuntu24.04."
+    echo "Rootfs type '$TYPE' only supports amd64. Multi-arch types: ubuntu22.04, ubuntu24.04, ubuntu26.04."
     exit 1
 fi
 

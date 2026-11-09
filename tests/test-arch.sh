@@ -30,7 +30,7 @@ assert_eq "qemu-system-x86_64" "$QEMU_BIN" "amd64 qemu binary"
 assert_eq "ttyS0" "$SERIAL_CONSOLE" "amd64 console"
 assert_eq "/dev/sda" "$ROOT_DEVICE" "amd64 root device"
 assert_eq "$KERNEL_DIR/bzImage-6.1.22" "$KERNEL_IMAGE" "amd64 kernel"
-assert_eq "$REPO_DIR/rootfs.ext4" "$ROOTFS_IMAGE" "amd64 rootfs"
+assert_eq "$REPO_DIR/rootfs_amd64.ext4" "$ROOTFS_IMAGE" "amd64 rootfs"
 
 set_arch_vars arm64
 assert_eq "linux/arm64/v8" "$DOCKER_PLATFORM" "arm64 docker platform"
@@ -64,6 +64,12 @@ if ! type_supports_arch ubuntu24.04 arm64; then
 fi
 if ! type_supports_arch ubuntu22.04 riscv64; then
     fail "ubuntu22.04 should support riscv64"
+fi
+if ! type_supports_arch ubuntu26.04 arm64; then
+    fail "ubuntu26.04 should support arm64"
+fi
+if ! type_supports_arch ubuntu26.04 riscv64; then
+    fail "ubuntu26.04 should support riscv64"
 fi
 if ! type_supports_arch alpine amd64; then
     fail "alpine should support amd64"
