@@ -17,6 +17,7 @@
 | `mmap-file` | 内存映射文件读写 | `mmap`, `msync`, `munmap` |
 | `stopwatch-qt` | Qt6 图形界面秒表 | `QApplication`, `QTimer`, `QElapsedTimer` |
 | `snake-tk` | Python/Tkinter 贪吃蛇 | `tkinter.Canvas`, `after`, 键盘事件 |
+| `lvgl-clock` | LVGL 模拟表盘时钟（fbdev 直显） | `lv_linux_fbdev`, `lv_timer`, `lv_line` |
 | `kernel-perf` | 8 种 perf_event_open 用法 | 计数、分组、采样、tracepoint、kprobe/uprobe、PID/CPU |
 | `kernel-trace` | 11 种 ftrace/tracefs 用法 | function_graph、tracepoint、kprobe/uprobe、hist/synthetic、snapshot、instance、trace_pipe |
 | `ebpf` | 9 种裸 bpf(2) 用法 | map、socket filter、kprobe、tracepoint、uprobe、trace_printk、perf_event_output、verifier |
@@ -132,6 +133,28 @@ cd snake-tk && python3 -m unittest -v test_snake.py
 ```
 
 详见 [snake-tk/README.md](snake-tk/README.md)。
+
+## LVGL 表盘时钟
+
+`lvgl-clock/` 使用 LVGL 9.3 绘制模拟表盘、数字时间和日期，直接写入
+`/dev/fb0`，不依赖 Xorg。首次构建会下载 LVGL 源码到 `third_party/`（需要网络）。
+
+在宿主机交叉编译 arm64 版本：
+
+```bash
+make -C lvgl-clock ARCH=arm64
+```
+
+在带图形设备的 QEMU guest 中运行（`--gui` 或 `--vnc`）：
+
+```bash
+/mnt/linux-app/lvgl-clock/start-clock.sh
+```
+
+按 Ctrl+C 退出并恢复文本控制台。时区通过 `TZ` 指定，例如
+`TZ=Asia/Shanghai /mnt/linux-app/lvgl-clock/start-clock.sh`。
+
+详见 [lvgl-clock/README.md](lvgl-clock/README.md)。
 
 ## eBPF 示例
 

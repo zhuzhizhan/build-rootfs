@@ -1,5 +1,6 @@
 SUBDIRS := process-fork pthread-sum pipe-ipc shm-sem signal-demo epoll-server mmap-file ebpf kernel-perf kernel-trace
 GUI_DIR := stopwatch-qt
+LVGL_DIR := lvgl-clock
 
 all:
 	@for dir in $(SUBDIRS); do \
@@ -22,6 +23,12 @@ test-ebpf:
 gui:
 	$(MAKE) -C $(GUI_DIR)
 
+lvgl:
+	$(MAKE) -C $(LVGL_DIR)
+
+lvgl-arm64:
+	$(MAKE) -C $(LVGL_DIR) ARCH=arm64
+
 modules:
 	./kernel-drivers/build.sh
 
@@ -33,5 +40,9 @@ clean:
 		$(MAKE) -C $$dir clean; \
 	done
 	$(MAKE) -C $(GUI_DIR) clean
+	$(MAKE) -C $(LVGL_DIR) clean
 
-.PHONY: all test test-perf test-trace test-ebpf gui modules modules-clean clean
+distclean: clean
+	$(MAKE) -C $(LVGL_DIR) distclean
+
+.PHONY: all test test-perf test-trace test-ebpf gui lvgl lvgl-arm64 modules modules-clean clean distclean

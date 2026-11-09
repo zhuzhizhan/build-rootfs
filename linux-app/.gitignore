@@ -19,3 +19,5 @@ kernel-trace/trace_workload
 modules.order
 Module.symvers
 .*.cmd
+lvgl-clock/build/
+lvgl-clock/third_party/
